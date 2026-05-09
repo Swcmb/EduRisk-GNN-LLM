@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学业风险预警系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .dashboard {
+            margin-top: 2rem;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .risk-high {
+            border-left: 4px solid #dc3545;
+        }
+        .risk-medium {
+            border-left: 4px solid #ffc107;
+        }
+        .risk-low {
+            border-left: 4px solid #17a2b8;
+        }
+        .risk-none {
+            border-left: 4px solid #28a745;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+        .table-responsive {
+            margin-top: 1rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>学业风险预警系统</h1>
+        <p>基于分类算法的多级别预警机制</p>
+    </div>
+    
+    <div class="container dashboard">
+        <div class="row">
+            <!-- 风险分布卡片 -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3>风险分布</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="riskDistributionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 特征重要性卡片 -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3>特征重要性</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="featureImportanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 预警列表 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>预警学生列表</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>学生ID</th>
+                                <th>姓名</th>
+                                <th>风险等级</th>
+                                <th>风险概率</th>
+                                <th>行为模式</th>
+                                <th>风险因素</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="warningTableBody">
+                            <!-- 数据将通过JavaScript动态填充 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 操作按钮 -->
+        <div class="text-center mt-4">
+            <button class="btn btn-primary" onclick="refreshData()">刷新数据</button>
+            <button class="btn btn-secondary ml-2" onclick="exportReport()">导出报告</button>
+        </div>
+    </div>
+    
+    <script>
+        // 数据将通过API调用获取
+        
+        // 初始化图表
+        function initCharts() {
+            // 获取风险分布数据
+            fetch('/get-warning-report')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const report = data.report;
+                        
+                        // 统计风险分布
+                        const riskDistribution = {
+                            '高风险': 0,
+                            '中风险': 0,
+                            '低风险': 0,
+                            '无风险': 0
+                        };
+                        
+                        report.forEach(student => {
+                            const riskLevel = student['风险等级'] || student.risk_level || student.riskLevel;
+                            if (riskDistribution.hasOwnProperty(riskLevel)) {
+                                riskDistribution[riskLevel]++;
+                            }
+                        });
+                        
+                        // 风险分布图表
+                        const riskCtx = document.getElementById('riskDistributionChart').getContext('2d');
+                        new Chart(riskCtx, {
+                            type: 'pie',
+                            data: {
+                                labels: Object.keys(riskDistribution),
+                                datasets: [{
+                                    data: Object.values(riskDistribution),
+                                    backgroundColor: [
+                                        '#dc3545', // 高风险
+                                        '#ffc107', // 中风险
+                                        '#17a2b8', // 低风险
+                                        '#28a745'  // 无风险
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom'
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: '学生风险等级分布'
+                                    }
+                                }
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('获取风险分布数据失败:', error);
+                });
+            
+            // 获取特征重要性数据
+            fetch('/api/get-feature-importance')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const featureImportance = data.data;
+                        
+                        // 特征重要性图表
+                        const featureCtx = document.getElementById('featureImportanceChart').getContext('2d');
+                        new Chart(featureCtx, {
+                            type: 'bar',
+                            data: {
+                                labels: Object.keys(featureImportance),
+                                datasets: [{
+                                    label: '特征重要性',
+                                    data: Object.values(featureImportance),
+                                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                                    borderColor: 'rgba(102, 126, 234, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                indexAxis: 'y',
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: '影响学业风险的关键因素'
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        beginAtZero: true,
+                                        max: 0.4
+                                    }
+                                }
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('获取特征重要性数据失败:', error);
+                });
+        }
+        
+        // 填充预警表格
+        function fillWarningTable() {
+            const tbody = document.getElementById('warningTableBody');
+            tbody.innerHTML = '';
+            
+            // 获取预警报告数据
+            fetch('/get-warning-report')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const warnings = data.report || [];
+                        
+                        // 只显示有风险的学生（高风险、中风险、低风险）
+                        const riskWarnings = warnings.filter(student => {
+                            const riskLevel = student['风险等级'] || student.risk_level || student.riskLevel;
+                            return riskLevel === '高风险' || riskLevel === '中风险' || riskLevel === '低风险';
+                        });
+                        
+                        riskWarnings.forEach(student => {
+                            const row = document.createElement('tr');
+                            
+                            // 根据风险等级设置样式
+                            let riskClass = '';
+                            const riskLevel = student['风险等级'] || student.risk_level || student.riskLevel;
+                            switch(riskLevel) {
+                                case '高风险': riskClass = 'risk-high'; break;
+                                case '中风险': riskClass = 'risk-medium'; break;
+                                case '低风险': riskClass = 'risk-low'; break;
+                                default: riskClass = 'risk-none';
+                            }
+                            
+                            row.className = riskClass;
+                            row.innerHTML = `
+                                <td>${student['学生ID'] || student.id}</td>
+                                <td>${student['姓名'] || student.name}</td>
+                                <td>
+                                    <span class="badge ${getBadgeClass(riskLevel)}">
+                                        ${riskLevel}
+                                    </span>
+                                </td>
+                                <td>${((student['风险概率'] || student.probability) * 100).toFixed(1)}%</td>
+                                <td>
+                                    <span class="badge ${getBehaviorPatternClass(student['行为模式'] || student.behaviorPattern)}">
+                                        ${student['行为模式'] || student.behaviorPattern || '正常'}
+                                    </span>
+                                </td>
+                                <td>${student['风险因素'] || student.riskFactors || '无'}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info" onclick="showStudentDetail('${student['学生ID'] || student.id}')">详情</button>
+                                    <button class="btn btn-sm btn-warning ml-1" onclick="sendWarning('${student['学生ID'] || student.id}')">预警</button>
+                                </td>
+                            `;
+                            
+                            tbody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('获取预警报告失败:', error);
+                });
+        }
+        
+        // 获取风险等级对应的徽章样式
+        function getBadgeClass(riskLevel) {
+            switch(riskLevel) {
+                case '高风险': return 'bg-danger';
+                case '中风险': return 'bg-warning';
+                case '低风险': return 'bg-info';
+                default: return 'bg-success';
+            }
+        }
+        
+        // 获取行为模式对应的徽章样式
+        function getBehaviorPatternClass(behaviorPattern) {
+            switch(behaviorPattern) {
+                case '高风险行为': return 'bg-danger';
+                case '中等风险行为': return 'bg-warning';
+                case '低风险行为': return 'bg-info';
+                default: return 'bg-success';
+            }
+        }
+        
+        // 刷新数据
+        function refreshData() {
+            alert('数据已刷新');
+            // 实际应用中，这里会从后端获取最新数据
+        }
+        
+        // 导出报告
+        function exportReport() {
+            alert('报告已导出');
+            // 实际应用中，这里会生成并下载报告文件
+        }
+        
+        // 显示学生详情
+        function showStudentDetail(studentId) {
+            // 通过API获取学生详情
+            fetch(`/api/students/${studentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const student = data.student;
+                        let detailHTML = `
+                            <h4>学生详情</h4>
+                            <p><strong>姓名:</strong> ${student.name || '未知'}</p>
+                            <p><strong>年龄:</strong> ${student.age || '未知'}</p>
+                            <p><strong>专业:</strong> ${student.major || '未知'}</p>
+                            <p><strong>平均成绩:</strong> ${student.averageScore || student.avg_score || '未知'}</p>
+                            <p><strong>出勤率:</strong> ${student.attendance ? (student.attendance * 100).toFixed(1) + '%' : '未知'}</p>
+                            <p><strong>选修课程:</strong> ${student.courses ? student.courses.join(', ') : '未知'}</p>
+                            <p><strong>风险因素:</strong> ${student.riskFactors || student.risk_factors || '无'}</p>
+                        `;
+                        alert(detailHTML);
+                    } else {
+                        alert('获取学生详情失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('获取学生详情失败:', error);
+                    alert('获取学生详情失败');
+                });
+        }
+        
+        // 发送预警
+        function sendWarning(studentId) {
+            alert(`已向学生 ${studentId} 发送预警通知`);
+            // 实际应用中，这里会发送预警通知给学生、教师或家长
+        }
+        
+        // 页面加载完成后初始化
+        window.onload = function() {
+            initCharts();
+            fillWarningTable();
+        };
+    </script>
+</body>
+</html>
