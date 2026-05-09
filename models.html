@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型文档 - 学生学业预警与成长分析平台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-graduation-cap me-2"></i>学业预警平台
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="features.html">功能介绍</a></li>
+                    <li class="nav-item"><a class="nav-link" href="architecture.html">技术架构</a></li>
+                    <li class="nav-item"><a class="nav-link" href="api.html">API文档</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="models.html">模型文档</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="section-content">
+        <div class="container">
+            <div class="text-center mb-10">
+                <h1 class="page-title">模型文档</h1>
+                <p class="page-subtitle">七种机器学习算法模型的详细说明，包括决策树、逻辑回归、K-means、DBSCAN、Apriori、SimCLR和图神经网络</p>
+            </div>
+
+            <div class="row mb-8">
+                <div class="col-md-6 mb-6">
+                    <div class="model-card">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <div class="feature-icon" style="background: rgba(99, 102, 241, 0.15);">
+                                    <i class="fas fa-tree text-primary"></i>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3>决策树模型</h3>
+                                    <span class="model-type">监督学习-分类</span>
+                                </div>
+                                <p>基于树结构的监督学习算法，通过递归选择最优特征进行分裂，实现学业风险预测。</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-primary/20 text-primary-light text-xs">应用场景：学业风险预测、特征重要性分析</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-6">
+                    <div class="model-card">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <div class="feature-icon" style="background: rgba(16, 185, 129, 0.15);">
+                                    <i class="fas fa-chart-line text-success"></i>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3>逻辑回归模型</h3>
+                                    <span class="model-type">监督学习-分类</span>
+                                </div>
+                                <p>基于概率的监督学习算法，通过sigmoid函数实现分类任务，输出风险概率。</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-success/20 text-success text-xs">应用场景：学业风险评估、风险概率预测</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-6">
+                    <div class="model-card">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <div class="feature-icon" style="background: rgba(245, 158, 11, 0.15);">
+                                    <i class="fas fa-circle-nodes text-warning"></i>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3>K-means聚类</h3>
+                                    <span class="model-type">无监督学习-聚类</span>
+                                </div>
+                                <p>基于质心的无监督学习算法，通过迭代更新质心实现学生群体划分。</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-warning/20 text-warning text-xs">应用场景：学生群体分析、异常检测</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-6">
+                    <div class="model-card">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <div class="feature-icon" style="background: rgba(6, 182, 212, 0.15);">
+                                    <i class="fas fa-network-wired text-info"></i>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3>DBSCAN聚类</h3>
+                                    <span class="model-type">无监督学习-聚类</span>
+                                </div>
+                                <p>基于密度的无监督学习算法，能够发现任意形状的簇并自动识别噪声点。</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-info/20 text-info text-xs">应用场景：学生群体分析、异常检测</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-6">
+                    <div class="model-card">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <div class="feature-icon" style="background: rgba(168, 85, 247, 0.15);">
+                                    <i class="fas fa-link text-purple"></i>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3>Apriori算法</h3>
+                                    <span class="model-type">关联规则学习</span>
+                                </div>
+                                <p>基于频繁项集挖掘的关联规则学习算法，发现课程之间的关联关系。</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-purple/20 text-purple text-xs">应用场景：学习路径推荐、课程设置优化</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-6">
+                    <div class="model-card">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <div class="feature-icon" style="background: rgba(236, 72, 153, 0.15);">
+                                    <i class="fas fa-refresh text-secondary"></i>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3>SimCLR模型</h3>
+                                    <span class="model-type">自监督学习</span>
+                                </div>
+                                <p>基于对比学习的自监督学习算法，学习学生行为的表示向量。</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-secondary/20 text-secondary text-xs">应用场景：行为表征学习、迁移学习</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mx-auto mb-8">
+                    <div class="model-card">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <div class="feature-icon" style="background: rgba(148, 163, 184, 0.15);">
+                                    <i class="fas fa-project-diagram text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3>图神经网络</h3>
+                                    <span class="model-type">深度学习</span>
+                                </div>
+                                <p>基于图结构的深度学习算法，通过图卷积操作聚合邻居信息，挖掘学生之间的复杂关系。</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-muted/20 text-muted text-xs">应用场景：学生行为分析、关系挖掘</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>模型性能总结</h2>
+                <div class="table-responsive">
+                    <table class="model-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="th-content">
+                                        <i class="fas fa-box"></i>
+                                        <span>模型名称</span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th-content">
+                                        <i class="fas fa-tag"></i>
+                                        <span>算法类型</span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th-content">
+                                        <i class="fas fa-cogs"></i>
+                                        <span>核心能力</span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th-content">
+                                        <i class="fas fa-chart-bar"></i>
+                                        <span>评估指标</span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th-content">
+                                        <i class="fas fa-target"></i>
+                                        <span>应用场景</span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="model-tag primary">决策树</span></td>
+                                <td>监督学习-分类</td>
+                                <td>风险等级预测、规则生成</td>
+                                <td>准确率、精确率、召回率、F1分数</td>
+                                <td>学业风险预测、特征重要性分析</td>
+                            </tr>
+                            <tr>
+                                <td><span class="model-tag success">逻辑回归</span></td>
+                                <td>监督学习-分类</td>
+                                <td>风险概率预测</td>
+                                <td>准确率、ROC曲线、AUC值</td>
+                                <td>学业风险评估、风险因素分析</td>
+                            </tr>
+                            <tr>
+                                <td><span class="model-tag warning">K-means</span></td>
+                                <td>无监督学习-聚类</td>
+                                <td>群体划分、模式发现</td>
+                                <td>轮廓系数、戴维斯-布尔德指数</td>
+                                <td>学生群体分析、异常检测</td>
+                            </tr>
+                            <tr>
+                                <td><span class="model-tag info">DBSCAN</span></td>
+                                <td>无监督学习-聚类</td>
+                                <td>任意形状簇发现、噪声识别</td>
+                                <td>轮廓系数、噪声比例</td>
+                                <td>学生群体分析、异常检测</td>
+                            </tr>
+                            <tr>
+                                <td><span class="model-tag purple">Apriori</span></td>
+                                <td>关联规则学习</td>
+                                <td>关联规则挖掘</td>
+                                <td>支持度、置信度、提升度</td>
+                                <td>学习路径推荐、课程设置优化</td>
+                            </tr>
+                            <tr>
+                                <td><span class="model-tag secondary">SimCLR</span></td>
+                                <td>自监督学习</td>
+                                <td>行为表征学习</td>
+                                <td>线性评估准确率、聚类性能</td>
+                                <td>行为表征学习、迁移学习</td>
+                            </tr>
+                            <tr>
+                                <td><span class="model-tag muted">图神经网络</span></td>
+                                <td>深度学习</td>
+                                <td>关系挖掘、图表示学习</td>
+                                <td>节点分类准确率、链接预测准确率</td>
+                                <td>学生行为分析、关系挖掘</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="content-card mt-6">
+                <h2>算法分类体系</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="algorithm-category">
+                            <div class="category-header">
+                                <i class="fas fa-check-square text-primary"></i>
+                                <h3>监督学习</h3>
+                            </div>
+                            <p>使用标注数据进行训练，用于分类和回归任务</p>
+                            <div class="category-items">
+                                <span>决策树</span>
+                                <span>逻辑回归</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="algorithm-category">
+                            <div class="category-header">
+                                <i class="fas fa-search text-info"></i>
+                                <h3>无监督学习</h3>
+                            </div>
+                            <p>使用未标注数据进行训练，用于发现数据模式</p>
+                            <div class="category-items">
+                                <span>K-means</span>
+                                <span>DBSCAN</span>
+                                <span>Apriori</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="algorithm-category">
+                            <div class="category-header">
+                                <i class="fas fa-brain text-warning"></i>
+                                <h3>深度学习</h3>
+                            </div>
+                            <p>基于多层神经网络的复杂模式学习</p>
+                            <div class="category-items">
+                                <span>SimCLR</span>
+                                <span>图神经网络</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-6">
+                    <div class="footer-brand">
+                        <div class="footer-brand-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h4>学业预警平台</h4>
+                    </div>
+                    <p>基于机器学习算法的智能预警系统，为教育工作者提供有力的决策支持工具，助力学生学业发展。</p>
+                </div>
+                
+                <div class="col-lg-2 mb-6">
+                    <h4>功能模块</h4>
+                    <ul class="footer-links">
+                        <li><a href="features.html"><i class="fas fa-arrow-right"></i>功能介绍</a></li>
+                        <li><a href="architecture.html"><i class="fas fa-arrow-right"></i>技术架构</a></li>
+                        <li><a href="api.html"><i class="fas fa-arrow-right"></i>API文档</a></li>
+                        <li><a href="models.html"><i class="fas fa-arrow-right"></i>模型文档</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 mb-6">
+                    <h4>核心功能</h4>
+                    <ul class="footer-links">
+                        <li><a href="features.html#warning"><i class="fas fa-shield"></i>学业预警</a></li>
+                        <li><a href="features.html#analysis"><i class="fas fa-users"></i>群体分析</a></li>
+                        <li><a href="features.html#recommendation"><i class="fas fa-lightbulb"></i>学习推荐</a></li>
+                        <li><a href="features.html#report"><i class="fas fa-file-text"></i>报告生成</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 mb-6">
+                    <h4>关于项目</h4>
+                    <p>本项目基于机器学习算法，构建智能学业预警系统，为教育工作者提供决策支持。</p>
+                    <div class="mt-3">
+                        <span class="tech-badge" style="font-size: 0.8rem;"><i class="fas fa-code"></i>Python</span>
+                        <span class="tech-badge" style="font-size: 0.8rem;"><i class="fas fa-flask"></i>Flask</span>
+                        <span class="tech-badge" style="font-size: 0.8rem;"><i class="fas fa-brain"></i>scikit-learn</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 学生学业预警与成长分析平台</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
