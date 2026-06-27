@@ -467,5 +467,47 @@
     "success": false,
     "ip_address": null,
     "user_agent": null
+  },
+  {
+    "timestamp": "2026-06-27T17:47:43.303702",
+    "username": "admin",
+    "success": true,
+    "ip_address": "127.0.0.1",
+    "user_agent": "Werkzeug/3.1.3"
+  },
+  {
+    "timestamp": "2026-06-27T17:47:43.413443",
+    "username": "admin",
+    "success": false,
+    "ip_address": "127.0.0.1",
+    "user_agent": "Werkzeug/3.1.3"
+  },
+  {
+    "timestamp": "2026-06-27T17:47:43.528065",
+    "username": "admin",
+    "success": true,
+    "ip_address": "127.0.0.1",
+    "user_agent": "Werkzeug/3.1.3"
+  },
+  {
+    "timestamp": "2026-06-27T17:49:15.893335",
+    "username": "admin",
+    "success": true,
+    "ip_address": "127.0.0.1",
+    "user_agent": "Werkzeug/3.1.3"
+  },
+  {
+    "timestamp": "2026-06-27T17:49:16.003312",
+    "username": "admin",
+    "success": false,
+    "ip_address": "127.0.0.1",
+    "user_agent": "Werkzeug/3.1.3"
+  },
+  {
+    "timestamp": "2026-06-27T17:49:16.110225",
+    "username": "admin",
+    "success": true,
+    "ip_address": "127.0.0.1",
+    "user_agent": "Werkzeug/3.1.3"
   }
 ]

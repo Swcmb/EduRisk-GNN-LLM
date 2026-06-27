@@ -15,8 +15,8 @@ pip install -r requirements.txt
 # 启动服务（Flask 开发服务器，端口 5000）
 python run.py
 
-# 生成测试数据（可选）
-python src/data_generator.py
+# 运行测试
+pytest tests/ -v
 
 # 运行学业预警分析（独立模块调用）
 python -m src.academic_warning
@@ -26,9 +26,20 @@ LLM 功能需要本地 Ollama 服务运行在 `http://localhost:11434`，默认�
 
 ## 架构
 
-**后端**: Flask 单体应用，入口 `src/app.py`，通过 `run.py` 启动。
-**前端**: 单页 `templates/index.html`，使用 Bootstrap + Chart.js。
-**ML 管线**: scikit-learn 为主（决策树、逻辑回归、K-means、DBSCAN、Apriori），另有 PyTorch + PyG 用于 GNN 相关模块。
+**后端**: Flask 工厂模式 + Blueprint 架构，入口 `run.py` → `src/app.py`（create_app 工厂）。
+**前端**: 单页 `templates/index.html`，Bootstrap 5 + Bootstrap Icons + Chart.js。
+**ML 管线**: scikit-learn 为主（决策树、逻辑回归、K-means、DBSCAN、Apriori），另有 PyTorch + PyG 用于 GNN 相关模块（可选安装）。
+
+### Blueprint 路由组织
+
+| Blueprint | 文件 | URL 前缀 | 职责 |
+|:---|:---|:---|:---|
+| `auth_bp` | `src/blueprints/auth_bp.py` | `/api` | 登录、登出、用户管理 |
+| `data_bp` | `src/blueprints/data_bp.py` | `/` | 首页、文件上传、模板下载 |
+| `warning_bp` | `src/blueprints/warning_bp.py` | `/` | 预警执行、报告查询、通知发送 |
+| `analysis_bp` | `src/blueprints/analysis_bp.py` | `/` | 群体分析、学习路径、行为分析 |
+| `report_bp` | `src/blueprints/report_bp.py` | `/` | 报告生成 |
+| `llm_bp` | `src/blueprints/llm_bp.py` | `/` | LLM 配置与调用 |
 
 ### 核心数据流
 
@@ -46,30 +57,33 @@ CSV 数据文件 (data/)
 
 | 模块 | 职责 |
 |:---|:---|
-| `src/app.py` | Flask 路由、文件上传、API 端点、会话管理 |
-| `src/auth/` | 用户认证，支持 admin/teacher/student 三种角色 |
+| `src/app.py` | Flask 工厂（create_app），注册 Blueprint |
+| `src/blueprints/` | 6 个 Blueprint 路由模块 |
+| `src/core/decorators.py` | `@login_required`、`@role_required` 认证装饰器 |
+| `src/auth/` | 用户认证，werkzeug 密码哈希，TOTP 2FA |
 | `src/data_processing/` | 数据加载、清洗、特征工程、质量评估 |
 | `src/classification/` | 决策树 + 逻辑回归风险分类器 |
 | `src/group_analysis/` | K-means / DBSCAN 聚类分析 |
 | `src/association_rules/` | Apriori 算法关联规则挖掘 |
 | `src/learning_path_recommendation/` | 基于关联规则的学习路径推荐 |
-| `src/report_generator/` | 报告生成（CSV + LLM 增强的自然语言解释） |
+| `src/report_generator/` | 报告生成（CSV + LLM 增强） |
 | `src/llm_integration/` | OpenAI 协议客户端，对接本地 Ollama |
-| `src/student_behavior_representation/` | SimCLR 行为表征、数据增强、时序对齐 |
+| `src/student_behavior_representation/` | SimCLR 行为表征 |
 | `src/gnn_explanation/` | GNN 模型与解释器 |
-| `src/academic_warning.py` | 预警主程序入口 + 高级数据生成器 |
+| `src/academic_warning.py` | 预警主程序 + 数据生成器 |
 
 ### 关键文件
 
-- `data/` — 四个核心 CSV：`students.csv`、`grades.csv`、`attendance.csv`、`courses.csv`
-- `advanced_data/` — 增强数据（含 CSV/JSON/Parquet 格式）
-- `reports/` — 生成的报告、图表、通知日志
-- `templates/index.html` — 前端单页（包含所有页面视图和 JS 逻辑）
+- `data/` — 四个核心 CSV：`students.csv`（含 gender 列）、`grades.csv`、`attendance.csv`、`courses.csv`
+- `templates/index.html` — 前端单页（4800+ 行，含所有页面视图和 JS 逻辑）
 - `llm_config.json` — LLM 服务配置
+- `instance/auth/` — 运行时用户数据（.gitignore 排除）
 
 ## 注意事项
 
-- 模块间通过 `from src.xxx import ...` 交叉引用，需确保 `src/` 在 Python 路径中（`run.py` 已处理）
+- 所有模块统一使用 `from src.xxx import ...` 导入路径
+- 认证装饰器在 `src/core/decorators.py`，Blueprint 中使用 `@login_required` 和 `@role_required('admin')`
 - 预警系统通过 `subprocess` 调用 `python -m src.academic_warning`，非直接函数调用
-- 前端认证凭证硬编码（admin/admin123、teacher/teacher123、student/student123）
-- PyTorch 依赖为 CPU 版本（`+cpu`），不使用 GPU
+- 默认管理员账户：admin / Admin@123（教师/学生账户需管理员创建）
+- PyTorch 为可选依赖，需单独安装（CPU 版本）
+- 运行时数据存储在 `instance/auth/`，已从源码目录分离

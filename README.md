@@ -28,9 +28,10 @@
    pip install -r requirements.txt
    ```
 
-2. **生成测试数据**（可选）
+2. **（可选）安装 PyTorch 深度学习支持**
    ```bash
-   python data_generator.py
+   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+   pip install torch_geometric torch_scatter torch_sparse torch_cluster torch_spline_conv
    ```
 
 3. **启动服务**
@@ -38,17 +39,22 @@
    python run.py
    ```
 
-4. **访问系统**
+4. **运行测试**
+   ```bash
+   pytest tests/ -v
+   ```
+
+5. **访问系统**
    在浏览器中打开：http://127.0.0.1:5000
 
 ## 系统使用说明
 
 ### 1. 登录系统
 
-系统支持三种角色登录：
-- **管理员**：用户名 `admin`，密码 `admin123`
-- **教师**：用户名 `teacher`，密码 `teacher123`
-- **学生**：用户名 `student`，密码 `student123`
+系统支持三种角色，默认管理员账户：
+- **管理员**：用户名 `admin`，密码 `Admin@123`
+
+教师和学生账户需由管理员通过用户管理功能创建。
 
 ### 2. 数据管理（仅管理员）
 
@@ -171,30 +177,36 @@ S001,大学物理,第一学期,2024
 
 ### 项目目录结构
 - `src/` - 源代码目录
-  - `app.py` - Flask后端服务
-  - `academic_warning.py` - 学业预警主程序
-  - `data_generator.py` - 数据生成器
-  - `student_behavior_anomaly_detection.py` - 学生行为异常检测
-  - `reset_lock.py` - 重置锁定脚本
+  - `app.py` - Flask 应用工厂
+  - `blueprints/` - Flask Blueprint 路由模块
+    - `auth_bp.py` - 认证路由
+    - `data_bp.py` - 数据管理路由
+    - `warning_bp.py` - 预警路由
+    - `analysis_bp.py` - 分析路由
+    - `report_bp.py` - 报告路由
+    - `llm_bp.py` - LLM 配置路由
+  - `core/` - 核心工具（认证装饰器等）
+  - `auth/` - 认证模块
   - `data_processing/` - 数据处理模块
   - `classification/` - 分类算法实现
   - `association_rules/` - 关联规则算法
   - `group_analysis/` - 群体特征分析
   - `learning_path_recommendation/` - 学习路径推荐
   - `report_generator/` - 报告生成模块
-  - `llm_integration/` - LLM集成模块
+  - `llm_integration/` - LLM 集成模块
   - `student_behavior_representation/` - 学生行为表征
-  - `gnn_explanation/` - GNN解释模块
-  - `auth/` - 认证模块
-- `data/` - 数据文件目录
-- `advanced_data/` - 高级数据目录（包含CSV、JSON、Parquet格式）
+  - `gnn_explanation/` - GNN 解释模块
+  - `academic_warning.py` - 学业预警主程序
+  - `data_generator.py` - 数据生成器
+- `data/` - 数据文件目录（students.csv, grades.csv, attendance.csv, courses.csv）
+- `advanced_data/` - 高级数据目录
 - `reports/` - 报告和图表文件目录
 - `templates/` - 前端模板目录
-- `group_visualizations/` - 群体可视化目录
-- `docs/` - 文档目录
-- `tests/` - 测试文件目录
+- `tests/` - 单元测试目录
+- `instance/` - 运行时数据（用户数据等，不纳入版本控制）
 - `run.py` - 启动脚本
 - `requirements.txt` - 依赖包配置
+- `llm_config.json` - LLM 服务配置
 
 ## 注意事项
 

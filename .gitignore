@@ -1,2 +1,9 @@
 paper/
 .trae/
+__pycache__/
+*.pyc
+*.pyo
+instance/
+*.egg-info/
+.pytest_cache/
+.DS_Store
