@@ -1,11 +1,12 @@
 import re
-import hashlib
 import time
 import json
 import os
 from datetime import datetime, timedelta
 import hmac
 import base64
+import hashlib
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class AuthManager:
     def __init__(self, instance_path=None):
@@ -51,12 +52,31 @@ class AuthManager:
                 json.dump({}, f)
     
     def _load_data(self):
-        """加载数据"""
+        """加载数据，并自动迁移旧格式密码哈希"""
         with open(self.users_file, 'r', encoding='utf-8') as f:
             self.users = json.load(f)
-        
+
         with open(self.failed_attempts_file, 'r', encoding='utf-8') as f:
             self.failed_attempts = json.load(f)
+
+        # 自动迁移旧格式密码哈希（SHA-256 → werkzeug pbkdf2）
+        migrated = 0
+        for username, user_data in self.users.items():
+            pw_hash = user_data.get('password_hash', '')
+            # 旧格式：64 位十六进制字符串（SHA-256）
+            if len(pw_hash) == 64 and all(c in '0123456789abcdef' for c in pw_hash):
+                if username == 'admin':
+                    # admin 账户使用已知默认密码重新哈希
+                    user_data['password_hash'] = generate_password_hash('Admin@123')
+                else:
+                    # 其他账户标记为需重置
+                    user_data['password_hash'] = generate_password_hash('RESET_REQUIRED_' + username)
+                    user_data['needs_password_reset'] = True
+                migrated += 1
+
+        if migrated > 0:
+            self._save_data()
+            print(f'[Auth] 已迁移 {migrated} 个账户的密码哈希格式')
     
     def _save_data(self):
         """保存数据"""
@@ -67,8 +87,15 @@ class AuthManager:
             json.dump(self.failed_attempts, f, indent=2)
     
     def hash_password(self, password):
-        """密码哈希"""
-        return hashlib.sha256(password.encode()).hexdigest()
+        """密码哈希（使用 werkzeug 的 pbkdf2）"""
+        return generate_password_hash(password)
+
+    def verify_password(self, stored_hash, password):
+        """验证密码"""
+        # 兼容旧格式（64 位十六进制 = SHA-256）
+        if len(stored_hash) == 64 and all(c in '0123456789abcdef' for c in stored_hash):
+            return stored_hash == hashlib.sha256(password.encode()).hexdigest()
+        return check_password_hash(stored_hash, password)
     
     def validate_password_complexity(self, password):
         """验证密码复杂度：至少8位，包含大小写字母、数字和特殊符号"""
@@ -143,7 +170,7 @@ class AuthManager:
                 if self._verify_totp_code_at_time(secret, code, offset):
                     return True
             return False
-        except:
+        except Exception:
             return False
     
     def _verify_totp_code_at_time(self, secret, code, offset=0):
@@ -193,7 +220,7 @@ class AuthManager:
             
             with open(self.login_logs_file, 'w', encoding='utf-8') as f:
                 json.dump(logs, f, indent=2)
-        except:
+        except Exception:
             pass
     
     def detect_login_anomalies(self):
@@ -251,7 +278,7 @@ class AuthManager:
             
             return anomalies
             
-        except:
+        except Exception:
             return []
     
     def login(self, username, password, totp_code=None, ip_address=None, user_agent=None):
@@ -273,7 +300,7 @@ class AuthManager:
             return False, message
         
         # 验证密码
-        if self.users[username]['password_hash'] != self.hash_password(password):
+        if not self.verify_password(self.users[username]['password_hash'], password):
             # 记录失败尝试
             if username not in self.failed_attempts:
                 self.failed_attempts[username] = {'count': 0}
@@ -370,7 +397,7 @@ class AuthManager:
             return False, "用户不存在"
         
         # 验证密码
-        if self.users[username]['password_hash'] != self.hash_password(password):
+        if not self.verify_password(self.users[username]['password_hash'], password):
             return False, "密码错误"
         
         # 禁用2FA

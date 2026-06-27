@@ -1,6 +1,7 @@
 """认证相关路由"""
 from flask import Blueprint, request, jsonify, session
 from src.auth.auth import AuthManager
+from src.core.decorators import login_required, role_required
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api')
 
@@ -81,11 +82,11 @@ def check_auth():
 
 
 @auth_bp.route('/users', methods=['GET'])
+@login_required
+@role_required('admin')
 def get_users():
     """获取所有用户"""
     try:
-        if 'authenticated' not in session or not session['authenticated']:
-            return jsonify({'status': 'error', 'message': '未授权访问'})
         auth_mgr = _get_auth_manager()
         users = auth_mgr.get_all_users()
         return jsonify({'status': 'success', 'users': users})
@@ -94,11 +95,11 @@ def get_users():
 
 
 @auth_bp.route('/users', methods=['POST'])
+@login_required
+@role_required('admin')
 def add_user():
     """添加用户"""
     try:
-        if 'authenticated' not in session or not session['authenticated']:
-            return jsonify({'status': 'error', 'message': '未授权访问'})
         data = request.get_json()
         username = data.get('username')
         password = data.get('password')
@@ -113,11 +114,11 @@ def add_user():
 
 
 @auth_bp.route('/users/<username>', methods=['DELETE'])
+@login_required
+@role_required('admin')
 def delete_user(username):
     """删除用户"""
     try:
-        if 'authenticated' not in session or not session['authenticated']:
-            return jsonify({'status': 'error', 'message': '未授权访问'})
         auth_mgr = _get_auth_manager()
         success, message = auth_mgr.delete_user(username)
         return jsonify({'status': 'success' if success else 'error', 'message': message})
@@ -126,11 +127,11 @@ def delete_user(username):
 
 
 @auth_bp.route('/users/<username>/enable', methods=['PUT'])
+@login_required
+@role_required('admin')
 def enable_user(username):
     """启用用户"""
     try:
-        if 'authenticated' not in session or not session['authenticated']:
-            return jsonify({'status': 'error', 'message': '未授权访问'})
         auth_mgr = _get_auth_manager()
         success, message = auth_mgr.update_user(username, enabled=True)
         return jsonify({'status': 'success' if success else 'error', 'message': message})
@@ -139,11 +140,11 @@ def enable_user(username):
 
 
 @auth_bp.route('/users/<username>/disable', methods=['PUT'])
+@login_required
+@role_required('admin')
 def disable_user(username):
     """禁用用户"""
     try:
-        if 'authenticated' not in session or not session['authenticated']:
-            return jsonify({'status': 'error', 'message': '未授权访问'})
         auth_mgr = _get_auth_manager()
         success, message = auth_mgr.update_user(username, enabled=False)
         return jsonify({'status': 'success' if success else 'error', 'message': message})

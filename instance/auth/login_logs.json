@@ -453,5 +453,19 @@
     "success": true,
     "ip_address": "127.0.0.1",
     "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0"
+  },
+  {
+    "timestamp": "2026-06-27T17:40:06.791957",
+    "username": "admin",
+    "success": true,
+    "ip_address": null,
+    "user_agent": null
+  },
+  {
+    "timestamp": "2026-06-27T17:40:06.870221",
+    "username": "admin",
+    "success": false,
+    "ip_address": null,
+    "user_agent": null
   }
 ]

@@ -1,20 +1,21 @@
 {
   "admin": {
-    "password_hash": "e86f78a8a3caf0b60d8e74e5942aa6d86dc150cd3c03338aef25b7d2d7e3acc7",
+    "password_hash": "scrypt:32768:8:1$mL6nNzW0WtcNHLWd$6364f0c6d62e3af4994d77a5c4adbffb9c93f2418bdbe689d3ab0d19fa108dc1a2cbf73ad4d89544dd2d13854256cd06e3bd95a28a433f60ff9ee966cdb1e9d5",
     "role": "admin",
     "enabled": true,
     "created_at": "2026-03-21T22:06:38.854336",
-    "last_login": "2026-04-08T18:29:13.801559",
+    "last_login": "2026-06-27T17:40:06.789025",
     "totp_secret": "bce0a3135ee384ffacf562bcacfc5e0a",
     "totp_enabled": false
   },
   "admin1": {
-    "password_hash": "e86f78a8a3caf0b60d8e74e5942aa6d86dc150cd3c03338aef25b7d2d7e3acc7",
+    "password_hash": "scrypt:32768:8:1$s8oq7Mj84GXxA0QR$2b4a46783bd9107612a6100fd37d52f7a588c338bc59b051413695d32670c02136dce424bedefd3bee4805aa682af82a5dcef6e89b49f4a4a43f1d7715fb00d2",
     "role": "user",
     "enabled": true,
     "created_at": "2026-04-08T18:30:09.172904",
     "last_login": null,
     "totp_secret": "30813f2ddd68c5240966fbd172ec287c",
-    "totp_enabled": false
+    "totp_enabled": false,
+    "needs_password_reset": true
   }
 }
