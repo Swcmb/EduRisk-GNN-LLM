@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.gitignore
+.pytest_cache/
+*.egg-info/
+instance/
+reports/
+models/
+claude-context/
+paper/
+.trae/
+*.md
+!README.md
