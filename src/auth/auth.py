@@ -8,16 +8,21 @@ import hmac
 import base64
 
 class AuthManager:
-    def __init__(self):
-        self.users_file = 'auth/users.json'
-        self.login_logs_file = 'auth/login_logs.json'
-        self.failed_attempts_file = 'auth/failed_attempts.json'
+    def __init__(self, instance_path=None):
+        # 使用 instance 目录存储运行时数据，避免污染源码目录
+        if instance_path:
+            self.data_dir = os.path.join(instance_path, 'auth')
+        else:
+            self.data_dir = 'auth'
+        self.users_file = os.path.join(self.data_dir, 'users.json')
+        self.login_logs_file = os.path.join(self.data_dir, 'login_logs.json')
+        self.failed_attempts_file = os.path.join(self.data_dir, 'failed_attempts.json')
         self._ensure_files_exist()
         self._load_data()
     
     def _ensure_files_exist(self):
         """确保必要的文件存在"""
-        os.makedirs('auth', exist_ok=True)
+        os.makedirs(self.data_dir, exist_ok=True)
         
         # 创建默认用户
         if not os.path.exists(self.users_file):
