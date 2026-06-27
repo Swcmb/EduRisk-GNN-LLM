@@ -2,8 +2,12 @@ import json
 import os
 import datetime
 from typing import Dict, List, Optional
-import pdfkit
 import pandas as pd
+
+try:
+    import pdfkit
+except ImportError:
+    pdfkit = None
 
 from .openai_client import llm_client
 

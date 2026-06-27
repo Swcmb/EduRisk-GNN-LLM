@@ -7,3 +7,9 @@ instance/
 *.egg-info/
 .pytest_cache/
 .DS_Store
+
+# 运行时生成文件
+reports/
+advanced_data/
+models/
+auth/
