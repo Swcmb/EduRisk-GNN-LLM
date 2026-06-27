@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>学业分析与预警系统</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
@@ -203,6 +204,9 @@
         }
         .alert {
             margin-top: 1rem;
+        }
+        .admin-only {
+            display: none;
         }
     </style>
 </head>
@@ -1130,7 +1134,12 @@
                         document.getElementById('login-page').classList.add('d-none');
                         document.getElementById('main-page').classList.remove('d-none');
                         document.getElementById('user-info').textContent = `${currentUser.username} (${currentUser.role === 'admin' ? '管理员' : '用户'})`;
-                        
+
+                        // 根据角色显示/隐藏管理功能
+                        document.querySelectorAll('.admin-only').forEach(el => {
+                            el.style.display = currentUser.role === 'admin' ? '' : 'none';
+                        });
+
                         // 初始化图表
                         initCharts();
                         fillWarningTable();
@@ -1193,7 +1202,12 @@
                     document.getElementById('login-page').classList.add('d-none');
                     document.getElementById('main-page').classList.remove('d-none');
                     document.getElementById('user-info').textContent = `${currentUser.username} (${currentUser.role === 'admin' ? '管理员' : '用户'})`;
-                    
+
+                    // 根据角色显示/隐藏管理功能
+                    document.querySelectorAll('.admin-only').forEach(el => {
+                        el.style.display = currentUser.role === 'admin' ? '' : 'none';
+                    });
+
                     // 初始化图表
                     initCharts();
                     fillWarningTable();
