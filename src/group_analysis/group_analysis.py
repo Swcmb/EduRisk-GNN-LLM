@@ -5,12 +5,9 @@ import seaborn as sns
 import sys
 import os
 
-# 添加项目根目录到Python路径
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from sklearn.preprocessing import StandardScaler
-from data_processing.cluster_analysis import kmeans_clustering, dbscan_clustering, optimize_kmeans, analyze_clusters
-from data_processing.data_loader import load_data
+from src.data_processing.cluster_analysis import kmeans_clustering, dbscan_clustering, optimize_kmeans, analyze_clusters
+from src.data_processing.data_loader import load_data
 
 
 def load_and_preprocess_data():

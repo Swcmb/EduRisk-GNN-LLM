@@ -6,8 +6,8 @@ import io
 import json
 import numpy as np
 from datetime import datetime
-from llm_integration.openai_client import llm_client
-from auth.auth import AuthManager
+from src.llm_integration.openai_client import llm_client
+from src.auth.auth import AuthManager
 
 app = Flask(__name__)
 

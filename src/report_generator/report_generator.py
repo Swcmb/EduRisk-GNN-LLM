@@ -3,9 +3,9 @@ import os
 from typing import Dict, Any, Optional
 from .llm_integration import LLMIntegration
 from .report_templates import ReportTemplates
-from data_processing.data_loader import load_data
-from data_processing.feature_engineering import extract_features
-from classification.classification import AcademicRiskClassifier
+from src.data_processing.data_loader import load_data
+from src.data_processing.feature_engineering import extract_features
+from src.classification.classification import AcademicRiskClassifier
 
 class ReportGenerator:
     def __init__(self, llm_api_key: Optional[str] = None):

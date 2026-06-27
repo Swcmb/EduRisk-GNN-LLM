@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from learning_path_recommendation.recommendation import LearningPathRecommender
+from src.learning_path_recommendation.recommendation import LearningPathRecommender
 
 class RecommendationEvaluator:
     def __init__(self, recommender):

@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 import re
-from association_rules.apriori import Apriori
-from data_processing.data_loader import load_data
-from llm_integration.openai_client import llm_client
+from src.association_rules.apriori import Apriori
+from src.data_processing.data_loader import load_data
+from src.llm_integration.openai_client import llm_client
 
 class LearningPathRecommender:
     def __init__(self, min_support=0.1, min_confidence=0.5):

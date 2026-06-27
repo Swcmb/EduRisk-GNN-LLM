@@ -7,9 +7,9 @@ import random
 import json
 import logging
 from datetime import datetime, timedelta
-from classification.classification import AcademicRiskClassifier
-from data_processing.data_loader import load_data
-from data_processing.feature_engineering import extract_features
+from src.classification.classification import AcademicRiskClassifier
+from src.data_processing.data_loader import load_data
+from src.data_processing.feature_engineering import extract_features
 
 
 class AdvancedStudentDataGenerator:

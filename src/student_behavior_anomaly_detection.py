@@ -7,9 +7,9 @@ from sklearn.neighbors import LocalOutlierFactor
 from sklearn.metrics import pairwise_distances
 from sklearn.preprocessing import StandardScaler
 
-from student_behavior_representation import StudentBehaviorRepresentationSystem
-from data_processing.data_loader import load_data
-from data_processing.feature_engineering import extract_features
+from src.student_behavior_representation import StudentBehaviorRepresentationSystem
+from src.data_processing.data_loader import load_data
+from src.data_processing.feature_engineering import extract_features
 
 class StudentBehaviorAnomalyDetection:
     """学生行为异常检测系统"""
